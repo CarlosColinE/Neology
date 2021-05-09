@@ -1,0 +1,144 @@
+﻿@using System.Configuration
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/Main/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/fontawesomecss")
+    <link href="../Content/buttons.dataTables.min.css" rel="stylesheet" />
+
+    <style>
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+            .navbar a {
+                float: left;
+                font-size: 16px;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+        .dropdownbtn {
+            float: left;
+            overflow: hidden;
+        }
+
+            .dropdownbtn .dropbtn {
+                font-size: 16px;
+                border: none;
+                outline: none;
+                color: white;
+                padding: 14px 16px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+            }
+
+            .navbar a:hover, .dropdownbtn:hover .dropbtn {
+                background-color: #9d3393;
+            }
+
+        .dropdownbtn-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+            .dropdownbtn-content a {
+                float: none;
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+            }
+
+                .dropdownbtn-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdownbtn:hover .dropdownbtn-content {
+            display: block;
+        }
+
+
+        .loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url(../Content/images/cargando.gif) 50% 50% no-repeat rgb(249,249,249);
+            opacity: .8;
+        }
+    </style>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="../Scripts/js-miranda/jquery.miranda.js"></script>
+    <script src="../Scripts/datatables.min.js"></script>
+    <script src="../Scripts/datatables.buttons.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" title="TheAudioDB">
+            @*<img style="max-width: 100px;" src="~/Content/images/.png" />*@
+        </a>
+
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+
+        @*@if (User.Identity.IsAuthenticated)
+            {*@
+        <div class="navbar-collapse collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
+                <li class="divider-vertical"></li>
+            </ul>
+
+            @Html.Partial("_LoginPartial")
+        </div>
+        @*}*@
+    </nav>
+
+
+
+    <div class="container body-content">
+        <br />
+        @RenderBody()
+    </div>
+
+    <hr style="height: 10px; border: 0; box-shadow: 0 10px 10px -10px #8c8b8b inset;" />
+
+    <footer class="footer">
+        <p class="centerText">
+            <span>
+                &copy; @DateTime.Now.Year - <b> versión @typeof(WebApiApplication).Assembly.GetName().Version </b> - My ASP.NET Application
+            </span>
+        </p>
+    </footer>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

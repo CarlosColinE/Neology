@@ -1,0 +1,103 @@
+﻿@using TheAudioDBAPI.Models
+@model UserLoginModel
+@{
+    /**/
+    /**/
+    ViewBag.Title = "Log in";
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/modernizr")
+@Styles.Render("~/Content/bootstrapcss")
+@Styles.Render("~/bundles/LoginCSS")
+@Scripts.Render("~/bundles/bootstrapjs")
+
+<div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+    <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4" style="padding-left: 0; padding-right: 0;">
+        <div class="row" id="transp">
+            <div class="wrap" style="padding-top: 50%;">
+                <p class="form-title">
+                    INICIAR SESIÓN
+                </p>
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "FrmLg FormLogin login", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { placeholder = "Usuario", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "form.login label" })
+                    <p></p>
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Contraseña", type = "password" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "form.login label" })
+                    <p></p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-white" })
+
+                    <input type="submit" value="INICIAR SESIÓN" class="btn btn-success btn-sm" />
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/bootstrapjs")
+
+<div class="modal fade" id="mostrarAviso" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 style="text-align: center;">Alerta</h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align:justify;" class="alert alert-warning">
+                    Ocurrio un error al iniciar sesion, posibles causas:
+                    <br /><br />
+                    <label class="control-label" id="Razon">.</label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn btn-warning">Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var url = "@Model.ReturnUrl";
+    var Success = function (data) {
+        debugger;
+        if (!data.Error)
+        {
+            /* aqui si no hay error lo pasa a donde debde ir*/
+            if (data.Url != "")
+            {
+                location.href = data.Url;
+            }
+            else
+            {
+                location.href = url;
+            }
+        }
+        else
+        {
+           /* aqui debderia avsarle  que inicio de sesion fallido */
+            $("#Razon").text(data.Mensaje);
+           mostrarCF();
+        }
+    }
+
+    $('.FrmLg').submit(function (e) {
+        debugger;
+       e.preventDefault();
+       $.post(this.action, { Username: $("#Username").val(), Password: $("#Password").val(), ReturnUrl: url }, Success).fail(function (er) {
+           var error = er;
+       });
+   });
+
+    var mostrarCF = function () {
+        debugger;
+       $('#mostrarAviso').modal({ backdrop: 'static', keyboard: false })
+       $("#mostrarAviso").modal("show");
+   };
+</script>
